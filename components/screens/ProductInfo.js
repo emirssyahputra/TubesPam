@@ -271,16 +271,6 @@ const ProductInfo = ({route, navigation}) => {
               }}>
               {product.productName}
             </Text>
-            <Ionicons
-              name="link-outline"
-              style={{
-                fontSize: 24,
-                color: COLOURS.blue,
-                backgroundColor: COLOURS.blue + 10,
-                padding: 8,
-                borderRadius: 100,
-              }}
-            />
           </View>
           <Text
             style={{

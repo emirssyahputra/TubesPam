@@ -11,23 +11,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {COLOURS, Items} from '../database/Database';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from 'expo-location';
+import { useRoute } from '@react-navigation/native';
 
 
-const MyCart = ({navigation}) => {
+const MyCart = (props) => {
   const [product, setProduct] = useState();
   const [total, setTotal] = useState(null);
   const [location, setLocation] = useState(null);
   const [address, setAddress] = useState(null);
   const [locationInfo, setLocationInfo] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-
+  const selectedBank = props.route.params?.selectedBank ?? 'Mandiri';
+  
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const unsubscribe = props.navigation.addListener('focus', () => {
       getDataFromDB();
     });
 
     return unsubscribe;
-  }, [navigation]);
+  }, [props.navigation]);
 
   useEffect(() => {
     (async () => {
@@ -108,14 +110,14 @@ const MyCart = ({navigation}) => {
 
   //checkout
   const checkOut = async () => {
-    navigation.navigate('Verif');
+    props.navigation.navigate('Verif');
   };
   
   const renderProducts = (data, index) => {
     return (
       <TouchableOpacity
         key={data.key}
-        onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
+        onPress={() => props.navigation.navigate('ProductInfo', {productID: data.id})}
         style={{
           width: '100%',
           height: 100,
@@ -231,7 +233,7 @@ const MyCart = ({navigation}) => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
             <MaterialCommunityIcons
               name="chevron-left"
               style={{
@@ -335,6 +337,7 @@ const MyCart = ({navigation}) => {
               }}>
               Metode Pembayaran
             </Text>
+            <TouchableOpacity onPress={() => props.navigation.navigate('Bank')}>
             <View
               style={{
                 flexDirection: 'row',
@@ -374,7 +377,7 @@ const MyCart = ({navigation}) => {
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
-                    Mandiri
+                    {selectedBank}
                   </Text>
                   <Text
                     style={{
@@ -393,6 +396,7 @@ const MyCart = ({navigation}) => {
                 style={{fontSize: 22, color: COLOURS.black}}
               />
             </View>
+            </TouchableOpacity>
           </View>
           <View
             style={{
