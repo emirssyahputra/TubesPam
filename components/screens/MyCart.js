@@ -10,10 +10,16 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {COLOURS, Items} from '../database/Database';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as Location from 'expo-location';
+
 
 const MyCart = ({navigation}) => {
   const [product, setProduct] = useState();
   const [total, setTotal] = useState(null);
+  const [location, setLocation] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [locationInfo, setLocationInfo] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -22,6 +28,35 @@ const MyCart = ({navigation}) => {
 
     return unsubscribe;
   }, [navigation]);
+
+  useEffect(() => {
+    (async () => {
+      
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+      let address  = await Location.reverseGeocodeAsync(location.coords);
+      setAddress(address);
+      let locationInfoVal = null;
+      if (address && address.length > 0) {
+        locationInfoVal = `${address[0].city}, ${address[0].subregion}, ${address[0].country}`;
+      }
+      setLocationInfo(locationInfoVal);
+    })();
+  }, []);
+  
+  //get product data by productID
+  let text = 'Waiting..';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (locationInfo) {
+    text = JSON.stringify(locationInfo);
+  }
 
   //get data from local DB by ID
   const getDataFromDB = async () => {
@@ -72,19 +107,10 @@ const MyCart = ({navigation}) => {
   };
 
   //checkout
-
   const checkOut = async () => {
-    try {
-      await AsyncStorage.removeItem('cartItems');
-    } catch (error) {
-      return error;
-    }
-
-    ToastAndroid.show('Items will be Deliverd SOON!', ToastAndroid.SHORT);
-
-    navigation.navigate('Home');
+    navigation.navigate('Verif');
   };
-
+  
   const renderProducts = (data, index) => {
     return (
       <TouchableOpacity
@@ -148,11 +174,11 @@ const MyCart = ({navigation}) => {
                   maxWidth: '85%',
                   marginRight: 4,
                 }}>
-                &#8377;{data.productPrice}
+                Rp {data.productPrice}
               </Text>
               <Text>
-                (~&#8377;
-                {data.productPrice + data.productPrice / 20})
+                (Rp 
+                {data.productPrice + data.productPrice / 10})
               </Text>
             </View>
           </View>
@@ -167,41 +193,7 @@ const MyCart = ({navigation}) => {
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginRight: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}>
-                <MaterialCommunityIcons
-                  name="minus"
-                  style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
-                  }}
-                />
-              </View>
-              <Text>1</Text>
-              <View
-                style={{
-                  borderRadius: 100,
-                  marginLeft: 20,
-                  padding: 4,
-                  borderWidth: 1,
-                  borderColor: COLOURS.backgroundMedium,
-                  opacity: 0.5,
-                }}>
-                <MaterialCommunityIcons
-                  name="plus"
-                  style={{
-                    fontSize: 16,
-                    color: COLOURS.backgroundDark,
-                  }}
-                />
-              </View>
+              
             </View>
             <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
               <MaterialCommunityIcons
@@ -257,7 +249,7 @@ const MyCart = ({navigation}) => {
               color: COLOURS.black,
               fontWeight: '400',
             }}>
-            Order Details
+            Detail Pesanan
           </Text>
           <View></View>
         </View>
@@ -271,7 +263,7 @@ const MyCart = ({navigation}) => {
             paddingLeft: 16,
             marginBottom: 10,
           }}>
-          My Cart
+          Keranjang Saya
         </Text>
         <View style={{paddingHorizontal: 16}}>
           {product ? product.map(renderProducts) : null}
@@ -290,7 +282,7 @@ const MyCart = ({navigation}) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Delivery Location
+              Lokasi Pengiriman
             </Text>
             <View
               style={{
@@ -323,30 +315,9 @@ const MyCart = ({navigation}) => {
                   />
                 </View>
                 <View>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: COLOURS.black,
-                      fontWeight: '500',
-                    }}>
-                    2 Petre Melikishvili St.
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      color: COLOURS.black,
-                      fontWeight: '400',
-                      lineHeight: 20,
-                      opacity: 0.5,
-                    }}>
-                    0162, Tbilisi
-                  </Text>
-                </View>
+              <Text> {text} </Text>
+            </View>
               </View>
-              <MaterialCommunityIcons
-                name="chevron-right"
-                style={{fontSize: 22, color: COLOURS.black}}
-              />
             </View>
           </View>
           <View
@@ -362,7 +333,7 @@ const MyCart = ({navigation}) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Payment Method
+              Metode Pembayaran
             </Text>
             <View
               style={{
@@ -386,7 +357,7 @@ const MyCart = ({navigation}) => {
                     borderRadius: 10,
                     marginRight: 18,
                   }}>
-                  <Text
+                    <Text
                     style={{
                       fontSize: 10,
                       fontWeight: '900',
@@ -403,7 +374,7 @@ const MyCart = ({navigation}) => {
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
-                    Visa Classic
+                    Mandiri
                   </Text>
                   <Text
                     style={{
@@ -413,7 +384,7 @@ const MyCart = ({navigation}) => {
                       lineHeight: 20,
                       opacity: 0.5,
                     }}>
-                    ****-9092
+                    ****-3052
                   </Text>
                 </View>
               </View>
@@ -437,7 +408,7 @@ const MyCart = ({navigation}) => {
                 letterSpacing: 1,
                 marginBottom: 20,
               }}>
-              Order Info
+              Info Pemesanan
             </Text>
             <View
               style={{
@@ -463,7 +434,7 @@ const MyCart = ({navigation}) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total}.00
+                Rp {total}
               </Text>
             </View>
             <View
@@ -481,7 +452,7 @@ const MyCart = ({navigation}) => {
                   color: COLOURS.black,
                   opacity: 0.5,
                 }}>
-                Shipping Tax
+                PPN 10%
               </Text>
               <Text
                 style={{
@@ -490,7 +461,7 @@ const MyCart = ({navigation}) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total / 20}
+                Rp {total / 10}
               </Text>
             </View>
             <View
@@ -515,7 +486,7 @@ const MyCart = ({navigation}) => {
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                &#8377;{total + total / 20}
+                Rp {total + total / 10}
               </Text>
             </View>
           </View>
@@ -549,7 +520,7 @@ const MyCart = ({navigation}) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            CHECKOUT (&#8377;{total + total / 20} )
+            CHECKOUT (Rp {total + total / 10} )
           </Text>
         </TouchableOpacity>
       </View>

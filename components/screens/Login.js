@@ -104,13 +104,6 @@ const Login = (props) => {
                 }}
                 />
             </View>
-            <TouchableOpacity
-            onPress={() =>{
-                console.log("Forget Password");
-            }}
-            >
-                <Text style={styles.forget}>Forget Password</Text>
-            </TouchableOpacity>
             <TouchableOpacity style={styles.loginBtn}
             onPress={AuthLogin}>
             {loading.loadingLogin? <ActivityIndicator size='small'color="white"/>: <Text style={styles.loginText}>Login</Text>}
@@ -174,10 +167,5 @@ const styles = StyleSheet.create({
         color: 'white',
       },
       
-      /* Style untuk elemen Text */
-      forget :{
-        color: '#003f5c',
-        marginTop: 15,
-      },
     });
 export default Login

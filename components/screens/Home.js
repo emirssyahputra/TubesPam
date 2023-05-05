@@ -13,8 +13,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const Home = ({navigation}) => {
-  const [products, setProducts] = useState([]);
-  const [accessory, setAccessory] = useState([]);
+  const [samsung, setsamsung] = useState([]);
+  const [xiaomi, setxiaomi] = useState([]);
 
   //get called on screen loads
   useEffect(() => {
@@ -28,20 +28,20 @@ const Home = ({navigation}) => {
   //get data from DB
 
   const getDataFromDB = () => {
-    let productList = [];
-    let accessoryList = [];
-    for (let index = 0; index < Items.length; index++) {
-      if (Items[index].category == 'product') {
-        productList.push(Items[index]);
-      } else if (Items[index].category == 'accessory') {
-        accessoryList.push(Items[index]);
+    let samsungList = [];
+    let xiaomiList = [];
+    for (let index = 0; index < 6; index++) {
+      if (Items[index].category == 'samsung') {
+        samsungList.push(Items[index]);
+      } else if (Items[index].category == 'xiaomi') {
+        xiaomiList.push(Items[index]);
       }
     }
 
-    setProducts(productList);
-    setAccessory(accessoryList);
+    setsamsung(samsungList);
+    setxiaomi(xiaomiList);
   };
-
+ 
   //create an product reusable card
 
   const ProductCard = ({data}) => {
@@ -106,7 +106,7 @@ const Home = ({navigation}) => {
           }}>
           {data.productName}
         </Text>
-        {data.category == 'accessory' ? (
+        {data.category == 'xiaomi'|| 'samsung' ? (
           data.isAvailable ? (
             <View
               style={{
@@ -153,7 +153,7 @@ const Home = ({navigation}) => {
             </View>
           )
         ) : null}
-        <Text>&#8377; {data.productPrice}</Text>
+        <Text> Rp {data.productPrice}</Text>
       </TouchableOpacity>
     );
   };
@@ -166,7 +166,6 @@ const Home = ({navigation}) => {
         backgroundColor: COLOURS.white,
       }}>
       <StatusBar backgroundColor={COLOURS.white} barStyle="dark-content" />
-      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             width: '100%',
@@ -174,9 +173,9 @@ const Home = ({navigation}) => {
             justifyContent: 'space-between',
             padding: 16,
           }}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
             <Entypo
-              name="shopping-bag"
+              name="log-out"
               style={{
                 fontSize: 18,
                 color: COLOURS.backgroundMedium,
@@ -213,7 +212,7 @@ const Home = ({navigation}) => {
               letterSpacing: 1,
               marginBottom: 10,
             }}>
-            Hi-Fi Shop &amp; Service
+            Second Gadget
           </Text>
           <Text
             style={{
@@ -223,10 +222,10 @@ const Home = ({navigation}) => {
               letterSpacing: 1,
               lineHeight: 24,
             }}>
-            Audio shop on Rustaveli Ave 57.
-            {'\n'}This shop offers both products and services
+            Platform Penjualan Gadget Bekas
           </Text>
         </View>
+        <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             padding: 16,
@@ -249,7 +248,7 @@ const Home = ({navigation}) => {
                   fontWeight: '500',
                   letterSpacing: 1,
                 }}>
-                Products
+                Samsung
               </Text>
               <Text
                 style={{
@@ -259,9 +258,19 @@ const Home = ({navigation}) => {
                   opacity: 0.5,
                   marginLeft: 10,
                 }}>
-                41
+                4
               </Text>
             </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Lihat1')}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: COLOURS.blue,
+                fontWeight: '400',
+              }}>
+              Lihat Semua
+            </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -269,7 +278,7 @@ const Home = ({navigation}) => {
               flexWrap: 'wrap',
               justifyContent: 'space-around',
             }}>
-            {products.map(data => {
+            {samsung.map(data => {
               return <ProductCard data={data} key={data.id} />;
             })}
           </View>
@@ -297,7 +306,7 @@ const Home = ({navigation}) => {
                   fontWeight: '500',
                   letterSpacing: 1,
                 }}>
-                Accessories
+                Xiaomi
               </Text>
               <Text
                 style={{
@@ -307,9 +316,19 @@ const Home = ({navigation}) => {
                   opacity: 0.5,
                   marginLeft: 10,
                 }}>
-                78
+                6
               </Text>
             </View>
+            <TouchableOpacity onPress={() => navigation.navigate('Lihat2')}>
+            <Text
+              style={{
+                fontSize: 14,
+                color: COLOURS.blue,
+                fontWeight: '400',
+              }}>
+              Lihat Semua
+            </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
@@ -317,7 +336,7 @@ const Home = ({navigation}) => {
               flexWrap: 'wrap',
               justifyContent: 'space-around',
             }}>
-            {accessory.map(data => {
+            {xiaomi.map(data => {
               return <ProductCard data={data} key={data.id} />;
             })}
           </View>

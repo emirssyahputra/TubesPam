@@ -6,6 +6,9 @@ import Home from './components/screens/Home';
 import MyCart from './components/screens/MyCart';
 import ProductInfo from './components/screens/ProductInfo';
 import Login from './components/screens/Login';
+import Lihat1 from './components/screens/Lihat1';
+import Lihat2 from './components/screens/Lihat2';
+import Verif from './components/screens/Verif';
 
 
 const App = () => {
@@ -19,8 +22,11 @@ const App = () => {
         }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Lihat1" component={Lihat1} />
+        <Stack.Screen name="Lihat2" component={Lihat2} />
         <Stack.Screen name="MyCart" component={MyCart} />
         <Stack.Screen name="ProductInfo" component={ProductInfo} />
+        <Stack.Screen name="Verif" component={Verif} />
       </Stack.Navigator>
     </NavigationContainer>
   );

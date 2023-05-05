@@ -29,6 +29,8 @@ const ProductInfo = ({route, navigation}) => {
   let position = Animated.divide(scrollX, width);
 
   const [location, setLocation] = useState(null);
+  const [address, setAddress] = useState(null);
+  const [locationInfo, setLocationInfo] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
@@ -51,6 +53,13 @@ const ProductInfo = ({route, navigation}) => {
 
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
+      let address  = await Location.reverseGeocodeAsync(location.coords);
+      setAddress(address);
+      let locationInfoVal = null;
+      if (address && address.length > 0) {
+        locationInfoVal = `${address[0].city}, ${address[0].subregion}, ${address[0].country}`;
+      }
+      setLocationInfo(locationInfoVal);
     })();
   }, []);
   
@@ -58,8 +67,8 @@ const ProductInfo = ({route, navigation}) => {
   let text = 'Waiting..';
   if (errorMsg) {
     text = errorMsg;
-  } else if (location) {
-    text = JSON.stringify(location);
+  } else if (locationInfo) {
+    text = JSON.stringify(locationInfo);
   }
   const getDataFromDB = async () => {
     for (let index = 0; index < Items.length; index++) {
@@ -139,7 +148,7 @@ const ProductInfo = ({route, navigation}) => {
         backgroundColor={COLOURS.backgroundLight}
         barStyle="dark-content"
       />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
             width: '100%',
@@ -323,13 +332,6 @@ const ProductInfo = ({route, navigation}) => {
               </View>
               <Text> {text} </Text>
             </View>
-            <Entypo
-              name="chevron-right"
-              style={{
-                fontSize: 22,
-                color: COLOURS.backgroundDark,
-              }}
-            />
           </View>
           <View
             style={{
@@ -343,11 +345,11 @@ const ProductInfo = ({route, navigation}) => {
                 color: COLOURS.black,
                 marginBottom: 4,
               }}>
-              &#8377; {product.productPrice}.00
+              Rp {product.productPrice}
             </Text>
             <Text>
-              Tax Rate 2%~ &#8377;{product.productPrice / 20} (&#8377;
-              {product.productPrice + product.productPrice / 20})
+              PPN 10%~ Rp {product.productPrice / 10} (Rp 
+              {product.productPrice + product.productPrice / 10})
             </Text>
           </View>
         </View>
@@ -380,7 +382,7 @@ const ProductInfo = ({route, navigation}) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            {product.isAvailable ? 'Add to cart' : 'Not Avialable'}
+            {product.isAvailable ? 'Tambah ke Keranjang' : 'Produk Tidak Tersedia'}
           </Text>
         </TouchableOpacity>
       </View>
