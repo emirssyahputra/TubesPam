@@ -281,7 +281,7 @@ const ProductInfo = ({route, navigation}) => {
               opacity: 0.5,
               lineHeight: 20,
               maxWidth: '85%',
-              maxHeight: 44,
+              maxHeight: 70,
               marginBottom: 18,
             }}>
             {product.description}
@@ -338,8 +338,8 @@ const ProductInfo = ({route, navigation}) => {
               Rp {product.productPrice}
             </Text>
             <Text>
-              PPN 10%~ Rp {product.productPrice / 10} (Rp 
-              {product.productPrice + product.productPrice / 10})
+              Ongkos Kirim~ Rp {product.productPrice / 100} (Rp 
+              {product.productPrice + product.productPrice / 100})
             </Text>
           </View>
         </View>

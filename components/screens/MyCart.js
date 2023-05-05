@@ -11,7 +11,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {COLOURS, Items} from '../database/Database';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Location from 'expo-location';
-import { useRoute } from '@react-navigation/native';
 
 
 const MyCart = (props) => {
@@ -110,7 +109,7 @@ const MyCart = (props) => {
 
   //checkout
   const checkOut = async () => {
-    props.navigation.navigate('Verif');
+    props.navigation.navigate('Verif', {selectedBank});
   };
   
   const renderProducts = (data, index) => {
@@ -180,7 +179,7 @@ const MyCart = (props) => {
               </Text>
               <Text>
                 (Rp 
-                {data.productPrice + data.productPrice / 10})
+                {data.productPrice + data.productPrice / 100})
               </Text>
             </View>
           </View>
@@ -456,7 +455,7 @@ const MyCart = (props) => {
                   color: COLOURS.black,
                   opacity: 0.5,
                 }}>
-                PPN 10%
+                Ongkos Kirim
               </Text>
               <Text
                 style={{
@@ -465,7 +464,7 @@ const MyCart = (props) => {
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                Rp {total / 10}
+                Rp {total / 100}
               </Text>
             </View>
             <View
@@ -490,7 +489,7 @@ const MyCart = (props) => {
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                Rp {total + total / 10}
+                Rp {total + total / 100}
               </Text>
             </View>
           </View>
@@ -524,7 +523,7 @@ const MyCart = (props) => {
               color: COLOURS.white,
               textTransform: 'uppercase',
             }}>
-            CHECKOUT (Rp {total + total / 10} )
+            CHECKOUT (Rp {total + total / 100} )
           </Text>
         </TouchableOpacity>
       </View>

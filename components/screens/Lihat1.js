@@ -63,31 +63,6 @@ const Lihat1 = ({navigation}) => {
             alignItems: 'center',
             marginBottom: 8,
           }}>
-          {data.isOff ? (
-            <View
-              style={{
-                position: 'absolute',
-                width: '20%',
-                height: '24%',
-                backgroundColor: COLOURS.green,
-                top: 0,
-                left: 0,
-                borderTopLeftRadius: 10,
-                borderBottomRightRadius: 10,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: COLOURS.white,
-                  fontWeight: 'bold',
-                  letterSpacing: 1,
-                }}>
-                {data.offPercentage}%
-              </Text>
-            </View>
-          ) : null}
           <Image
             source={data.productImage}
             style={{
