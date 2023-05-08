@@ -9,8 +9,9 @@ import Login from './components/screens/Login';
 import Lihat1 from './components/screens/Lihat1';
 import Lihat2 from './components/screens/Lihat2';
 import Verif from './components/screens/Verif';
-import Bank from './components/screens/Bank'
-
+import Bank from './components/screens/Bank';
+import Profil from './components/screens/Profil';
+import Register from './components/screens/Register';
 
 const App = () => {
   const Stack = createNativeStackNavigator();
@@ -22,7 +23,9 @@ const App = () => {
           headerShown: false,
         }}>
         <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Profil" component={Profil} />
         <Stack.Screen name="Lihat1" component={Lihat1} />
         <Stack.Screen name="Lihat2" component={Lihat2} />
         <Stack.Screen name="MyCart" component={MyCart} />

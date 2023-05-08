@@ -105,9 +105,8 @@ const styles = StyleSheet.create({
   marginBottom: 20,
   },
   title: {
-  fontSize: 24,
+  fontSize: 20,
   fontWeight: 'bold',
-  color: COLOURS.backgroundDark,
   },
   imageContainer: {
   flex: 1,

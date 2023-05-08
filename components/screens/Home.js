@@ -148,9 +148,9 @@ const Home = ({navigation}) => {
             justifyContent: 'space-between',
             padding: 16,
           }}>
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profil')}>
             <Entypo
-              name="log-out"
+              name="user"
               style={{
                 fontSize: 18,
                 color: COLOURS.backgroundMedium,
@@ -293,7 +293,7 @@ const Home = ({navigation}) => {
                 6
               </Text>
             </View>
-            <TouchableOpacity onPress={() => navigation.navigate('Lihat2')}>
+            <TouchableOpacity onPress={() =>navigation.navigate('Lihat2')}>
             <Text
               style={{
                 fontSize: 14,

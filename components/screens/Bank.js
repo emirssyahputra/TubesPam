@@ -4,6 +4,8 @@ import BcaLogo from '../Logo/bca.png';
 import BniLogo from '../Logo/bni.png';
 import BriLogo from '../Logo/bri.png';
 import MandiriLogo from '../Logo/mandiri.png';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {COLOURS} from '../database/Database';
 
 const Bank = (props) => {
   const [selectedBank, setSelectedBank] = useState('Mandiri');
@@ -29,6 +31,18 @@ const Bank = (props) => {
   return (
     <View style={styles.container}>
     <View style={styles.titleContainer}>
+    <TouchableOpacity onPress={() => props.navigation.goBack()} style={{ position: 'absolute', left: 10 }}>
+        <MaterialCommunityIcons
+          name="chevron-left"
+          style={{
+                fontSize: 18,
+                color: COLOURS.backgroundMedium,
+                padding: 12,
+                borderRadius: 10,
+                backgroundColor: COLOURS.backgroundLight,
+          }}
+        />
+      </TouchableOpacity>
       <Text style={styles.title}>Metode Pembayaran</Text>
     </View>
     <View style={styles.bankContainer}>

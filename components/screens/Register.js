@@ -9,34 +9,35 @@ import {
   TextInput
 } from 'react-native';
 import { auth } from "../../firebase";
-import { useNavigation } from "@react-navigation/core";
 
+const Register = ({navigation}) => {
+    const [email,Setemail] = useState();
+    const [password,Setpassword] = useState();
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+    useEffect (() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+          if (user) {
+            navigation.navigate('Login')
+          }
+        })
+    
+        return unsubscribe
+      }, [])
+    
+      const handleSignUp = () => {
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then(userCredentials => {
+            const user = userCredentials.user;
+            auth
+            .signOut()
+            navigation.navigate('Login')
+            Alert.alert('Registrasi Sukses', 'Silahkan Login');
+          })
+          .catch(error => Alert.alert("Gagal Registrasi", "Akun Sudah Ada/Tidak Valid"))
+      };
+    
 
-  const navigation = useNavigation()
-
-  useEffect (() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.navigate("Home")
-      }
-    })
-
-    return unsubscribe
-  }, [])
-
-  const handleLogIn = () => {
-    auth
-    .signInWithEmailAndPassword(email, password)
-    .then(userCredentials => {
-      const user = userCredentials.user;
-      console.log('Logged In with:', user.email);
-    })
-    .catch(error => Alert.alert("Gagal Login", "Email/Password Salah"))
-  }
     return(
         <View style= {styles.container}>
             <Text style={styles.logo}>Second Gadget</Text>
@@ -46,7 +47,7 @@ function Login() {
                 placeholder="Email.."
                 placeholderTextColor="#003f5c"
                 onChangeText={(text)=>{
-                    setEmail(text);
+                    Setemail(text);
                 }}
                 />
             </View>
@@ -57,17 +58,17 @@ function Login() {
                 placeholder="Password.."
                 placeholderTextColor="#003f5c"
                 onChangeText={(text) => {
-                    setPassword(text);
+                    Setpassword(text);
                 }}
                 />
             </View>
             <TouchableOpacity style={styles.loginBtn}
-            onPress={handleLogIn}>
-            <Text style={styles.loginText}>Login</Text>
+            onPress={handleSignUp}>
+            <Text style={styles.loginText}>Sign Up</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            onPress={() => navigation.navigate('Register')}>
-           <Text style={styles.link}>Belum punya akun? Sign Up</Text>
+            onPress={() => navigation.navigate('Login')}>
+           <Text style={styles.link}>Sudah punya akun? Login</Text>
             </TouchableOpacity>
         </View>
     );
@@ -129,4 +130,4 @@ const styles = StyleSheet.create({
       },
       
     });
-    export default Login;
+export default Register;

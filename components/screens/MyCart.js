@@ -232,7 +232,7 @@ const MyCart = (props) => {
             justifyContent: 'space-between',
             alignItems: 'center',
           }}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+          <TouchableOpacity onPress={() => props.navigation.navigate('Home')}>
             <MaterialCommunityIcons
               name="chevron-left"
               style={{
@@ -246,9 +246,9 @@ const MyCart = (props) => {
           </TouchableOpacity>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 20,
               color: COLOURS.black,
-              fontWeight: '400',
+              fontWeight: 'bold',
             }}>
             Detail Pesanan
           </Text>
@@ -317,6 +317,7 @@ const MyCart = (props) => {
                 </View>
                 <View>
               <Text> {text} </Text>
+              <Text>No HP : 081368620646</Text>
             </View>
               </View>
             </View>
