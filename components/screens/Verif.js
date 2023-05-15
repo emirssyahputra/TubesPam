@@ -61,7 +61,7 @@ const Verif = (props) => {
       <Text style={styles.title}>Verifikasi Pembayaran</Text>
       <View style={{ width: 60 }}></View>
     </View>
-    <Text>Nomor Virutal Account {selectedBank} = {generatedNumber} </Text>
+    <Text>Nomor Virtual Account {selectedBank} = {generatedNumber} </Text>
     <View style={styles.imageContainer}>
       
       {selectedImage && (
